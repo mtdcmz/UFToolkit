@@ -22,3 +22,14 @@ Each tool is built with **MSYS2 MinGW32** using the provided `Makefile`.
 ```bash
 cd UPPEditor
 make
+```
+
+Requires:
+- `g++` / `windres` / `strip` (MinGW32)
+- Windows SDK headers and libraries (shipped with MinGW)
+
+The resulting `.exe` is statically linked – no external runtime dependencies.
+
+## License
+
+GNU General Public License v3.0 – see [LICENSE](LICENSE).
