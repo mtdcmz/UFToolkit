@@ -1,0 +1,111 @@
+#include "resource.h"
+#include <windows.h>
+
+#ifndef IDC_STATIC
+#define IDC_STATIC (-1)
+#endif
+
+IDI_MAINICON  ICON "uppeditor.ico"
+IDI_SMALLICON ICON "uppeditor.ico"
+
+// comctl32 v6 manifest (themed controls, esp. the ListView)
+1 24 "UPPEditor.exe.manifest"
+
+// --- Main Menu ---------------------------------------------------------------
+IDR_MAINMENU MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",         IDM_FILE_OPEN
+        MENUITEM "&Browse Saves...\tCtrl+B", IDM_FILE_BROWSE_SAVES
+        MENUITEM SEPARATOR
+        MENUITEM "&Reload\tCtrl+R",          IDM_FILE_RELOAD,  GRAYED
+        MENUITEM "&Save\tCtrl+S",            IDM_FILE_SAVE,    GRAYED
+        MENUITEM "Save &As...",              IDM_FILE_SAVEAS,  GRAYED
+        MENUITEM "&Close",                   IDM_FILE_CLOSE,   GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                    IDM_FILE_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&GitHub Repository",       IDM_HELP_REPO
+        MENUITEM SEPARATOR
+        MENUITEM "&About UPPEditor...",      IDM_HELP_ABOUT
+    END
+END
+
+// --- Keyboard Accelerators ---------------------------------------------------
+IDR_ACCEL ACCELERATORS
+BEGIN
+    "O", IDM_FILE_OPEN,         VIRTKEY, CONTROL
+    "B", IDM_FILE_BROWSE_SAVES, VIRTKEY, CONTROL
+    "R", IDM_FILE_RELOAD,       VIRTKEY, CONTROL
+    "S", IDM_FILE_SAVE,         VIRTKEY, CONTROL
+END
+
+// --- Add Key Dialog ------------------------------------------------------------
+IDD_ADD_KEY DIALOG 0, 0, 300, 180
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add Key"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Key name:",  IDC_STATIC, 10, 10, 100, 10
+    EDITTEXT        IDC_ADDKEY_NAME, 10, 22, 280, 14, ES_AUTOHSCROLL
+    LTEXT           "Type:",      IDC_STATIC, 10, 44, 100, 10
+    AUTORADIOBUTTON "String", IDC_ADDKEY_TYPE_STR,    10, 56,  60, 12, WS_GROUP
+    AUTORADIOBUTTON "Int",    IDC_ADDKEY_TYPE_INT,    80, 56,  50, 12
+    AUTORADIOBUTTON "Float",  IDC_ADDKEY_TYPE_FLOAT, 140, 56,  60, 12
+    LTEXT           "Value:",     IDC_STATIC, 10, 76, 100, 10
+    EDITTEXT        IDC_ADDKEY_VALUE, 10, 88, 280, 60,
+                    ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    DEFPUSHBUTTON   "&Add",    IDOK,     150, 156, 60, 16
+    PUSHBUTTON      "Cancel",  IDCANCEL, 220, 156, 60, 16
+END
+
+// --- Edit Value Dialog ---------------------------------------------------------
+IDD_EDIT_VALUE DIALOG 0, 0, 300, 168
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit Value"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT     "Key:",   IDC_STATIC, 10, 10, 40, 10
+    LTEXT     "",       IDC_EDITVAL_KEYLABEL,  55, 10, 235, 10
+    LTEXT     "Type:",  IDC_STATIC, 10, 24, 40, 10
+    LTEXT     "",       IDC_EDITVAL_TYPELABEL, 55, 24, 235, 10
+    LTEXT     "Value:", IDC_STATIC, 10, 40, 100, 10
+    EDITTEXT  IDC_EDITVAL_VALUE, 10, 52, 280, 80,
+              ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    DEFPUSHBUTTON "&OK",     IDOK,     150, 144, 60, 16
+    PUSHBUTTON    "Cancel",  IDCANCEL, 220, 144, 60, 16
+END
+
+// --- Browse Saves Dialog --------------------------------------------------------
+IDD_BROWSE_SAVES DIALOG 0, 0, 460, 300
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Browse PlayerPrefs Saves"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT   "Save files found under %APPDATA%\\Unity\\WebPlayerPrefs\\:",
+            IDC_STATIC, 10, 8, 440, 10
+    CONTROL "", IDC_BROWSE_LISTVIEW, "SysListView32",
+            WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP |
+            LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS,
+            10, 22, 440, 240
+    PUSHBUTTON    "Open &Containing Folder", IDC_BROWSE_OPENFOLDER, 10,  270, 130, 16
+    DEFPUSHBUTTON "&Open Save",              IDC_BROWSE_OPEN,       300, 270,  75, 16
+    PUSHBUTTON    "Close",                   IDCANCEL,              378, 270,  75, 16
+END
+
+// --- About Dialog ----------------------------------------------------------------
+IDD_ABOUT DIALOG 0, 0, 280, 90
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About UPPEditor"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    ICON          IDI_MAINICON, IDC_STATIC, 10, 10, 0, 0
+    LTEXT         "UPPEditor 1.0",                                IDC_STATIC, 48, 12, 220, 12
+    LTEXT         "Unity WebPlayer PlayerPrefs (.upp) Editor",     IDC_STATIC, 48, 24, 220, 10
+    LTEXT         "https://github.com/mtdcmz/UFToolkit/",         IDC_STATIC, 48, 36, 220, 10
+    LTEXT         "",                                              IDC_STATIC, 10, 56, 260,  1, SS_ETCHEDHORZ
+    DEFPUSHBUTTON "OK", IDOK, 115, 68, 50, 14
+END
